@@ -4,7 +4,7 @@ session_start();
 define('DBHOST', 'localhost');
 define('DBUSER', 'username');
 define('DBPASS', 'password');
-define('DBNAME', 'databasename');
+define('DBNAME', 'blog_db');
 
 $mysqli = new mysqli('DBHOST', 'DBUSER', 'DBPASS', 'DBNAME');
 
