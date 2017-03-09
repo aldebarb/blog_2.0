@@ -4,89 +4,62 @@
 //user_login(login_id, user_id, email_address, password_hash)
 class User
 {
-	private $userID;
-	public $mysqli;//I don't like that this is public.
+	private $userId;
+	private $passwordHash;
 	public $firstName;
 	public $lastName;
 	public $birthDate;
-	public $emailAddress;//Should personal info be set to private?
+	public $emailAddress;
 	public $password;
-	private $passwordHash;
+	
 
-	public function __construct($userID)
+	public function __construct($userId)
 	{
-	    $this->userID = $userID;
+		$this->userId = $userId;
 
-	    if ($userID > 0) {
-	    	loadUser($userID);
-	    }
+		if ($userId >0) {
+			loadUser($userId);
+		}
 	}
 
-	public function save()
+	public function save($mysqli)
 	{
-		if ($this->userID == 0) {
-			/*$this->userID =*/createUserInDatabase();
-
+		if ($this->userId == 0) {
+	        $this->createUserInDatabase($mysqli);
+	        
 		} else {
-			updateUserInDatabase();
+			$this->updateUserInDatabase($mysqli);
 		}
+	}
+
+	private function createUserInDatabase($mysqli)
+	{
+		$this->hashUserPassword();
+
+        $mysqli->query("INSERT INTO users (first_name, last_name, birth_date) VALUES ('$this->firstName', '$this->lastName', '$this->birthDate')");
+        $this->userId = mysqli_insert_id($mysqli);
+        $mysqli->query("INSERT INTO user_login (user_id, email_address, password_hash) VALUES ('$this->userId', '$this->emailAddres', '$this->passwordHash')");
+        //return true; //May not need this
+	}
+
+	private function updateUserInDatabase($mysqli)
+	{
+		$this->hashUserPassword();
+		
+		$mysqli->query("UPDATE users SET first_name = '$this->firstName', last_name = '$this->lastName', birth_date = '$this->birthDate' WHERE user_id = '$this->userId'");
+		$mysqli->query("UPDATE user_login SET email_address = '$this->emailAddress', password_hash = $this->passwordHash")
 	}
 	
-	private function createUserInDatabase()
+	public function deleteUser($mysqli)
 	{
-		$bool = true;
-		$sql = "SELECT email_address FROM user_login";
-		$result = $this->mysqli->query($sql);
-
-		if ($result->num_rows > 0) {
-			
-			while ($row = $result->fetch_assoc()) {
-				$tablesEmailAddress = $row['email_address'];
-
-				if ($tablesEmailAddress == $this->emailAddress) {
-					$bool = false;
-				}
-			}
-
-			if ($bool) {
-				$this->mysqli->query("INSERT INTO users (first_name, last_name, birth_date) VALUES ('$this->firstName', '$this->lastName', '$this->birth_date')");
-				$this->userID = mysqli_insert_id($mysqli);
-				$this->mysqli->query("INSERT INTO user_login (user_id, email_address, password_hash) VALUES ('$this->userID', '$this->emailAddress', '$this->passwordHash')");
-
-			}
-			return $bool;
-		}
+		$mysqli->query("DELETE FROM users WHERE user_id = '$this->userId'");
+		$mysqli->query("DELETE FROM user_login WHERE user_id = '$this->userId'");
 	}
 
-	private function updateUserInDatabase()
+	public function loadUser($mysqli)
 	{
-		$bool = true;
-		$sql = "SELECT email_address FROM user_login";
-		$result = $this->mysqli->query($sql);
-
-		if ($result->num_rows > 0) {
-			
-			while ($row = $result->fetch_assoc()) {
-				$tablesEmailAddress = $row['emailAddress'];
-
-				if ($tablesEmailAddress == $this->emailAddress) {
-					$bool = false;
-					
-				}
-			}
-
-			if ($bool) {
-			    $this->mysqli->query("UPDATE users SET first_name = '$this->firstName', last_name = '$this->lastName', birth_date = '$this->birthDate' WHERE user_id = '$this->userID'");
-			    $this->myslqi->query("UPDATE user_login SET email_address = '$this->emailAddress', password_hash = '$this->passwordHash");
-			}
-			return $bool;
-		}
-	}
-
-	public function loadUser()
-	{
-		$sql = "SELECT users.first_name, users.last_name, users.birth_date, user_login.email_address, user_login.password_hash FROM users INNER JOIN user_login ON users.user_id = user_login.user_id WHERE user_id = $this->userID";
-		$result = $this->mysqli->query($sql);
+		$sql = "SELECT users.first_name, users.last_name, users.birth_date, user_login.email_address, user_login.password_hash FROM users INNER JOIN user_login ON users.user_id = user_login.user_id WHERE user_id = '$this->userId'";
+		$result = $mysqli->query($sql);
 
 		if ($result->num_rows > 0) {
 			$this->firstName = $row['first_name'];
@@ -95,24 +68,13 @@ class User
 			$this->emailAddress = $row['email_address'];
 			$this->passwordHash = $row['password_hash'];
 		}
-
 	}
 
-	public function deleteUser()
-	{
-		$this->mysqli->query("DELETE FROM users WHERE user_id = '$this->userID'");
-		$this->mysqli->query("DELETE FROM user_login WHERE user_id = '$this->userID'");
-	}
-
-	private function hashUserPassword($userPassword)
-	{
-		//do I need this check here?
-		if (strlen($userPassword) < 8 || strlen($userPassword) >32) {
-			//return $userpassword = "";
-		}
-		$this->passwordHash = password_hash($userPassword, PASSWORD_DEFAULT);
-		return $this->passwordHash;
-	}
+    private function hashUserPassword()
+    {
+    	$this->passwordHash = password_hash($this->password, PASSWORD_DEFAULT);
+    	return $this->passwordHash;
+    }
 
 }
 
