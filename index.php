@@ -1,5 +1,4 @@
 <?php
-session_start();
 require 'includes/config.php';
 ?>
 
@@ -13,13 +12,17 @@ require 'includes/config.php';
 <?php
 
 if (isset($_POST['submit'])) {
-	
+	extract($_POST);
+
+	if ($userLoggedIn->login($emailAddress, $password)) {
+		echo "CONGRATS SOMETHING WORKED!";
+	}
 }
 ?>
 
 <h2>Welcome to Blog_2.0</h2>
-<form>
-	<label>Enter your login Information</label>
+<form method="post" action="">
+	<label>Enter your login Information</label><br>
 	Username: <input type="text" name="emailAddress"><br>
 	Password: <input type="password" name="password">
 	<input type="submit" name="submit" value="Login">

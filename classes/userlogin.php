@@ -21,7 +21,7 @@ class UserLogin
 	private function getUserHash($emailAddress)
 	{
 		$sql = "SELECT password FROM users WHERE emailAddress = $emailAddress";
-		$result = $mysqli->query($sql);
+		$result = $this->mysqli->query($sql);
 
 		if ($result->num_rows > 0) {
 			
@@ -37,7 +37,7 @@ class UserLogin
 	{
 		$hashed = $this->getUserHash($emailAddress);
 
-		if ($this->password_verify($password, $hashed) == 1) {
+		if (password_verify($password, $hashed) == 1) {
 			$_SESSION['loggedIn'] = true;
 			return true;
 		}

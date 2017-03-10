@@ -12,7 +12,6 @@ class User
 	public $emailAddress;
 	public $password;
 	
-
 	public function __construct($userId)
 	{
 		$this->userId = $userId;
