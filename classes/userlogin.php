@@ -5,6 +5,7 @@
 class UserLogin
 {
 	private $mysqli;
+	public $userId;
 
 	function __construct($mysqli)
 	{
@@ -20,14 +21,16 @@ class UserLogin
 
 	private function getUserHash($emailAddress)
 	{
-		$sql = "SELECT password FROM users WHERE emailAddress = $emailAddress";
+		$sql = "SELECT user_id, password_hash FROM user_login WHERE email_address = '$emailAddress'";
 		$result = $this->mysqli->query($sql);
 
 		if ($result->num_rows > 0) {
 			
 			while ($row = $result->fetch_assoc()) {
-				return $row['password'];
+				$this->userId = $row['user_id'];
+				return $row['password_hash'];
 			}
+
 		} else {
 			//Handle error?
 		}

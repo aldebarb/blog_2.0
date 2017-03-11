@@ -15,10 +15,6 @@ class User
 	public function __construct($userId)
 	{
 		$this->userId = $userId;
-
-		if ($userId >0) {
-			loadUser($userId);
-		}
 	}
 
 	public function save($mysqli)
@@ -46,7 +42,7 @@ class User
 		$this->hashUserPassword();
 		
 		$mysqli->query("UPDATE users SET first_name = '$this->firstName', last_name = '$this->lastName', birth_date = '$this->birthDate' WHERE user_id = '$this->userId'");
-		$mysqli->query("UPDATE user_login SET email_address = '$this->emailAddress', password_hash = $this->passwordHash")
+		$mysqli->query("UPDATE user_login SET email_address = '$this->emailAddress', password_hash = $this->passwordHash");
 	}
 	
 	public function deleteUser($mysqli)
@@ -57,15 +53,32 @@ class User
 
 	public function loadUser($mysqli)
 	{
-		$sql = "SELECT users.first_name, users.last_name, users.birth_date, user_login.email_address, user_login.password_hash FROM users INNER JOIN user_login ON users.user_id = user_login.user_id WHERE user_id = '$this->userId'";
+		/*
+		$sql = "SELECT u.first_name, u.last_name, u.birth_date, ul.email_address, ul.password_hash FROM users u JOIN user_login ul ON u.user_id = ul.user_id WHERE u.user_id = '$this->userId'";
+		$result = $mysqli->query($sql);
+		//if (!$mysqli->query($sql)) {
+		//	printf("Error shit: ", $mysqli->error);
+		//}
+		if ($result->num_rows > 0) {
+			
+			while ($row = $result->fetch_assoc()) {
+				$this->firstName = $row['first_name'];
+				$this->lastName = $row['last_name'];
+				$this->birthDate = $row['birth_date'];
+				$this->emailAddress = $row['email_address'];
+				$this->passwordHash = $row['password_hash'];
+			}
+		}
+		*/
+		$sql = "SELECT email_address, password_hash FROM user_login WHERE user_id = '$this->userId'";
 		$result = $mysqli->query($sql);
 
 		if ($result->num_rows > 0) {
-			$this->firstName = $row['first_name'];
-			$this->lastName = $row['last_name'];
-			$this->birthDate = $row['birth_date'];
-			$this->emailAddress = $row['email_address'];
-			$this->passwordHash = $row['password_hash'];
+			
+			while ($row = $result->fetch_assoc()) {
+				$this->emailAddress = $row['email_address'];
+				$this->passwordHash = $row['password_hash'];
+			}
 		}
 	}
 

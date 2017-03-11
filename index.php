@@ -15,7 +15,12 @@ if (isset($_POST['submit'])) {
 	extract($_POST);
 
 	if ($userLoggedIn->login($emailAddress, $password)) {
-		echo "CONGRATS SOMETHING WORKED!";
+		$user = new User($userLoggedIn->userId);
+		$user->loadUser($mysqli);
+		//echo $user->firstName;
+		//echo $user->lastName;
+		echo $user->emailAddress;
+		echo $user->password_hash;
 	}
 }
 ?>
