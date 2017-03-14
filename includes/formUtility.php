@@ -23,3 +23,12 @@ function verifyEmail($userEmail)
 	}
 	return $userEmail;
 }
+function hashUserPassword($password)
+    {
+    	if (strlen($password) < 8 || strlen($password) > 32) {
+		    return $passwordHash = "";
+	    }
+
+    	$passwordHash = password_hash($password, PASSWORD_DEFAULT);
+    	return $passwordHash;
+    }

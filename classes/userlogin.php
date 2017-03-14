@@ -46,6 +46,24 @@ class UserLogin
 		}
 	}
 
+	public function registerEmailAddress($emailAddress)
+	{
+		$sql = "SELECT email_address FROM user_login";
+		$result = $this->mysqli->query($sql);
+
+		if ($result->num_rows > 0) {
+			
+			while ($row = $result->fetch_assoc()) {
+				$tableEmailAddress = $row['email_address'];
+
+				if ($tableEmailAddress == $emailAddress) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	public function logout()
 	{
 		session_destroy();
