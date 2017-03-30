@@ -15,7 +15,7 @@ if (isset($_POST['submit'])) {
 	$inputArray = array_map('removeMaliciousCode', $_POST);
 	$inputArray['firstName'] = checkStringLength($inputArray['firstName'], 32);
 	$inputArray['lastName'] = checkStringLength($inputArray['lastName'], 32);
-    //Need a function to check the date.
+    $inputArray['birthDate'] = date('Y/m/d', strtotime($inputArray['birthDate']));
 	$inputArray['emailAddress'] = verifyEmail($inputArray['emailAddress']);
 	$inputArray['passwordHash'] = hashUserPassword($inputArray['password']);
 
@@ -29,12 +29,8 @@ if (isset($_POST['submit'])) {
         $registerUser->birthDate = $inputArray['birthDate'];
         $registerUser->emailAddress = strtolower($inputArray['emailAddress']);
         $registerUser->passwordHash = $inputArray['passwordHash'];
-        
-        if ($registerUser->save($mysqli)) {
-        	Print '<script>alert("Registration Complete!");</script>';
-            Print '<script>window.location.assign("index.php");</script>';
-            
-        }
+        $registerUser->save($mysqli);
+        header("location: index.php");
     }
 }
 ?>
