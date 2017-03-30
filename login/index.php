@@ -1,5 +1,6 @@
 <?php
 require '../includes/config.php';
+require '../includes/formUtility.php';
 ?>
 
 <!DOCTYPE html>
@@ -12,7 +13,7 @@ require '../includes/config.php';
 <?php
 
 if (isset($_POST['submit'])) {
-	
+	$_POST = array_map('removeMaliciousCode', $_POST);
 	extract($_POST);
 
 	if ($userLoggedIn->login($emailAddress, $password)) {
@@ -20,7 +21,7 @@ if (isset($_POST['submit'])) {
 		$user->loadUser($mysqli);
 		$_SESSION['userId'] = $userLoggedIn->userId;
 		$_SESSION['loggedIn'] = true;
-		header("location: ../home.php");
+		header("location: ../admin/home.php");
 	}
 }
 ?>
@@ -34,6 +35,6 @@ if (isset($_POST['submit'])) {
 </form><br>
 
 <p>Don't have an account? <a href="register.php">Click here and join today!</a></p>
-<p><a href="guest/index.php">Veiw the blog as a guest</a></p>
+<p><a href="../guest/index.php?guest=true">Veiw the blog as a guest</a></p>
 </body>
 </html>

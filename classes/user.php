@@ -38,7 +38,7 @@ class User
 	private function updateUserInDatabase($mysqli)
 	{		
 		$mysqli->query("UPDATE users SET first_name = '$this->firstName', last_name = '$this->lastName', birth_date = '$this->birthDate' WHERE user_id = '$this->userId'");
-		$mysqli->query("UPDATE user_login SET email_address = '$this->emailAddress', password_hash = $this->passwordHash");
+		$mysqli->query("UPDATE user_login SET email_address = '$this->emailAddress', password_hash = '$this->passwordHash'");
 	}
 	
 	public function deleteUser($mysqli)
