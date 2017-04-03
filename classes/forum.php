@@ -29,7 +29,7 @@ class Forum
 
 	public function createPost($mysqli)
 	{
-		$mysqli->query("INSERT INTO forum (user_id, post_title, post_blog, post_date, post_time) VALUES '$this->userId', '$this->postTitle', '$this->postContent', '$this->postDate', '$this->postTime'");
+		$mysqli->query("INSERT INTO forum (user_id, post_title, post_blog, post_date, post_time) VALUES ('$this->userId', '$this->postTitle', '$this->postContent', '$this->postDate', '$this->postTime')");
 	}
 
 	public function updatePost($mysqli)

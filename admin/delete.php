@@ -7,5 +7,5 @@ if (!$userLoggedIn->isLoggedIn()) {
 
 $deleteForum = new Forum($_GET['postId']);
 $deleteForum->deletePost($mysqli);
-header("location:home.php");
+header("location: ../home.php");
 ?>

@@ -1,11 +1,5 @@
 
 <?php
-require '../includes/config.php';
-
-if ($_GET['guest'] != true) {
-	header("location: ../login/index.php");
-}
-
 $result = $mysqli->query("SELECT forum.post_title, user_login.email_address, forum.post_date, forum.post_time, forum.post_blog, forum.post_id FROM forum JOIN user_login ON forum.user_id = user_login.user_id ORDER BY forum.post_id DESC");
 
 if ($result->num_rows > 0) {
