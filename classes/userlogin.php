@@ -31,8 +31,6 @@ class UserLogin
 				return $row['password_hash'];
 			}
 
-		} else {
-			//Handle error?
 		}
 	}
 
@@ -68,7 +66,5 @@ class UserLogin
 	{
 		session_destroy();
 	}
-
 }
-
 ?>

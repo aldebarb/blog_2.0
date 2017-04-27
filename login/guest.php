@@ -8,8 +8,8 @@ if ($result->num_rows > 0) {
 		print "<h2>" . $row['post_title'] . "</h2>";
 		print "<p>" . $row['post_blog'] . "</p>";
 		print "<p>Posted by " . $row['email_address'] . " on " . $row['post_date'] . " at " . $row['post_time'] . "</p>";
-			}
-		}
+	}
+}
 		
 ?>
 

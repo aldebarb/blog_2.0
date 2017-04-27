@@ -1,11 +1,11 @@
 <?php
 
 if (isset($_POST['submit'])) {
-
 	$inputArray = array_map('removeMaliciousCode', $_POST);
 
 	if (empty($inputArray['postTitle']) || empty($inputArray['postContent'])) {
 		echo "Invalid Post";
+		
 	} else {
 		$addForum = new Forum(0);
 		$addForum->userId = $_SESSION['userId'];

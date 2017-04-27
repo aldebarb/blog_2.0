@@ -3,7 +3,6 @@ $editForum = new Forum($_GET['postId']);
 $editForum->loadPost($mysqli);
 
 if (isset($_POST['submit'])) {
-	
 	$inputArray = array_map('removeMaliciousCode', $_POST);
 
 	if (empty($inputArray['postTitle']) || empty($inputArray['postContent'])) {

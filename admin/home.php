@@ -9,12 +9,12 @@ if ($result->num_rows > 0) {
 		print "<h2>" . $row['post_title'] . "</h2>";
 		print "<p>" . $row['post_blog'] . "</p>";
 		print "<p>Posted by " . $row['email_address'] . " on " . $row['post_date'] . " at " . $row['post_time'] . "</p>";
-
 		print "<form method='post' action='admin/delete.php?postId=" . $row['post_id'] . "'>";
 		print "<input type='submit' name='delete' value='Delete'>";
 		print "<a href='home.php?p=edit&postId=" . $row['post_id'] . "'>Edit Post?</a>";
 		print "</form>";
 	}
+	
 } else {
 	echo "Result should be empty";
 }
