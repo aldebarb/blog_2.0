@@ -1,0 +1,1 @@
+<p>Welcome to Char120! Where you can create anything within 120 characters.</p>

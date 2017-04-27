@@ -1,15 +1,3 @@
-<?php 
-require '../includes/config.php';
-require '../includes/formUtility.php';
-?>
-
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Registers</title>
-</head>
-<body>
-
 <?php
 if (isset($_POST['submit'])) {
 	$inputArray = array_map('removeMaliciousCode', $_POST);
@@ -45,6 +33,3 @@ if (isset($_POST['submit'])) {
 	Password: <input type="text" name="password" value=""><br><br>
 	<input type="submit" name="submit" value="Submit">	
 </form>
-
-</body>
-</html>
